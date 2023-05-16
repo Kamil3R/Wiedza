@@ -1,0 +1,35 @@
+=======================================
+Dodawanie baneru linux przed logowaniem
+=======================================
+
+edytuje -> /etc/ssh/sshd_config
+
+dodać -> Banner /etc/ssh/my_banner
+
+stworzyć -> /etc/ssh/my_banner
+
+Odpalić -> sudo systemctl reload ssh.service
+
+=======================================
+Dodawanie baneru linux po logowaniu
+=======================================
+
+Stworzyć -> sudo nano /etc/motd 
+
+Odpalić -> sudo systemctl restart ssh 
+
+=======================================
+Operacje na użytkowniku
+=======================================
+
+tworzenie ze ścieżka -> sudo useradd -m username (--create-home)
+
+restrarowanie hasła -> sudo passwd username
+
+=======================================
+SMB komendy
+=======================================
+
+sudo smbcontrol smbd reload-config - odświeżanie uprawnień samba
+sudo nano /etc/samba/smb.conf - plik konfiguracyjny
+sudo service smbd restart - restart samby
