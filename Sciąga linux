@@ -33,3 +33,10 @@ SMB komendy
 sudo smbcontrol smbd reload-config - odświeżanie uprawnień samba
 sudo nano /etc/samba/smb.conf - plik konfiguracyjny
 sudo service smbd restart - restart samby
+
+=======================================
+Zipowanie
+=======================================
+
+Tworzenie zipa -> zip -r archive.zip folder1
+Odpakowanie zipa -> unzip archive.zip
