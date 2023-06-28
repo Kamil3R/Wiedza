@@ -49,6 +49,7 @@ lista połączeń -> netstat -natp
 lista połączeń ze strony serwera -> netstat -tulpn
 sprawdzenie listy połączonych urządzeń -> arp
 sprawdzanie po macu adresu IP -> arp -a | grep "mac"
+test ścieżki -> route -n
 
 ==========================================
 Restart Sieci
