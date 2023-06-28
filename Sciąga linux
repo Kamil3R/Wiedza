@@ -49,3 +49,10 @@ lista połączeń -> netstat -natp
 lista połączeń ze strony serwera -> netstat -tulpn
 sprawdzenie listy połączonych urządzeń -> arp
 sprawdzanie po macu adresu IP -> arp -a | grep "mac"
+
+==========================================
+Restart Sieci
+==========================================
+
+Restart sieci -> systemctl restart NetworkManager
+Status sieci -> systemctl status NetworkManager
