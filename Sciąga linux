@@ -57,3 +57,10 @@ Restart Sieci
 
 Restart sieci -> systemctl restart NetworkManager
 Status sieci -> systemctl status NetworkManager
+
+=========================================
+Skrót do folderu
+=========================================
+
+Tworzenie skrótu -> ln -s <scieżka> <Nazwa Folderu>
+
