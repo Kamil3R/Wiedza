@@ -40,3 +40,12 @@ Zipowanie
 
 Tworzenie zipa -> zip -r archive.zip folder1
 Odpakowanie zipa -> unzip archive.zip
+
+===========================================
+Komendy do diagnostyki
+===========================================
+
+lista połączeń -> netstat -natp
+lista połączeń ze strony serwera -> netstat -tulpn
+sprawdzenie listy połączonych urządzeń -> arp
+sprawdzanie po macu adresu IP -> arp -a | grep "mac"
