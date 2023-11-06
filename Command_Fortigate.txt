@@ -1,1 +1,5 @@
-diagnose sniffer packet any "host 192.168.0.1" -> Analiza ruchu fortigate
+============================================
+Diagnozowanie ruchu sieciowego Fortigate
+=============================================
+
+diagnose sniffer packet any "host xx.xx.xx" -> Analiza ruchu fortigate
