@@ -75,3 +75,12 @@ sudo systemctl enable xrdp
 sudo adduser xrdp ssl-cert
 echo xfce4-session >~/.xsession
 sudo service xrdp restart
+
+=========================================
+Instalacje pakietów i usuwanie
+=========================================
+
+Instalowanie pakietu -> sudo dpkg -i package_file.deb
+Odinstalowanie pakitu -> sudo apt-get remove package_name
+
+
