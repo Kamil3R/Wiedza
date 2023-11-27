@@ -83,4 +83,10 @@ Instalacje pakietów i usuwanie
 Instalowanie pakietu -> sudo dpkg -i package_file.deb
 Odinstalowanie pakitu -> sudo apt-get remove package_name
 
+===========================================
+SSH SERVER
+===========================================
 
+sudo apt-get install openssh-server
+sudo systemctl enable ssh --now
+sudo systemctl start ssh
