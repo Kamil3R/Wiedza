@@ -96,3 +96,16 @@ SSH SERVER
 sudo apt-get install openssh-server
 sudo systemctl enable ssh --now
 sudo systemctl start ssh
+
+===========================================
+Pobieranie z githuba
+===========================================
+
+sudo apt-get install git
+git clone https://github.com/golemfactory/golem.git
+
+==========================================
+Kolor terminal linux
+==========================================
+
+PS1="$TITLEBAR\n\[${UC}\]\u \[${COLOR_LIGHT_BLUE}\]\${PWD} \[${COLOR_BLACK}\]\$(vcprompt) \n\[${COLOR_LIGHT_GREEN}\]→\[${COLOR_NC}\] "
