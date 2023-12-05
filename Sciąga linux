@@ -109,3 +109,15 @@ Kolor terminal linux
 ==========================================
 
 PS1="$TITLEBAR\n\[${UC}\]\u \[${COLOR_LIGHT_BLUE}\]\${PWD} \[${COLOR_BLACK}\]\$(vcprompt) \n\[${COLOR_LIGHT_GREEN}\]→\[${COLOR_NC}\] "
+
+========================================
+ISCSI
+=======================================
+
+lsblk -> sprawdzenie partycji dysków
+https://pl.linux-console.net/?p=370#gsc.tab=0 -> poradnik do ISCSI Debian
+
+========================================
+Inne
+=======================================
+whereis <komenda> -> ścieżka do komendy
