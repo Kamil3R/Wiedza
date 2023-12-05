@@ -40,6 +40,9 @@ sudo smbcontrol smbd reload-config - odświeżanie uprawnień samba
 sudo nano /etc/samba/smb.conf - plik konfiguracyjny
 sudo service smbd restart - restart samby
 
+useradd -s /sbin/nologin LOGIN -> twowrzenie usera
+smbpasswd -a LOGIN -> dopisywanie usera pod sambe
+
 =======================================
 Zipowanie
 =======================================
