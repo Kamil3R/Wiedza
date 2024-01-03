@@ -1,0 +1,15 @@
+sudo sysctl -w net.ipv4.icmp_echo_ignore_all=1   <- usuwanie pingów
+sudo sysctl -w net.ipv4.icmp_echo_ignore_all=0   <- aktywacja pingów
+systemctl restart wings 			 <- przeładowanie wingsów
+cd /var/lib/pterodactyl/volumes/ 		 <- ściezka do serwerów
+cd /var/lib/pterodactyl/volumes/
+
+./baza.sh &					 <- odpalanie skryptu na baze w tle
+chmod +x ./baza.sh 				 <- nadawanie nad uprawnień skryptowi
+
+/var/lib/pterodactyl/volumes/4a16038d-195d-403e-8ca3-67e517908a52/Servers/unturned/Rocket/SimpleLogs
+
+bash <(curl -s https://raw.githubusercontent.com/vilhelmprytz/pterodactyl-installer/master/install.sh)
+
+MySQL -> https://www.youtube.com/watch?v=C7Xo7WvHTYk&t=124s
+Ptero Install -> https://www.youtube.com/watch?v=UVDY7jv8s_0
