@@ -1,0 +1,19 @@
+===================Install==============================
+sudo apt install mysql-server
+sudo systemctl start mysql.service
+sudo mysql_secure_installation
+
+nano /etc/mysql/mysql.conf.d/mysqld.cnf
+CHANGE bind-address
+
+sudo systemctl restart mysql
+
+ufw allow 3306
+===============Command=======================
+mysql -u root -p (press enter twice)
+use mysql;
+
+create user 'user'@'%' identified by 'Password1';
+grant all privileges on *.* to 'user'@'%' with grant option;
+flush privileges;
+exit
