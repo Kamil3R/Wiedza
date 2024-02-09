@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plan Stołów</title>
+    <style>
+        /* Dodaj tu stylizację, aby strona wyglądała ładnie */
+        body {
+            background-color: #f4f4f4;
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        #search-container {
+            margin: 20px 0;
+        }
+
+        #tables-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .table {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin: 10px;
+            padding: 10px;
+            width: 150px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .person {
+            list-style: none;
+            margin: 5px 0;
+            padding: 5px;
+            border-bottom: 1px solid #ddd;
+            position: relative;
+        }
+
+        .edit-button {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            cursor: pointer;
+            color: #007bff;
+        }
+
+        .edit-input {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Plan Stołów</h1>
+
+<div id="search-container">
+    <label for="search">Wyszukaj osobę: </label>
+    <input type="text" id="search" oninput="searchTable()">
+</div>
+
+<div id="tables-container">
+    <!-- JavaScript doda stoły automatycznie -->
+</div>
+
+<input type="file" id="importButton">
+<button id="exportButton">Eksportuj dane do pliku JSON</button>
+
+<script>
+   function generateTables() {
+    const savedData = localStorage.getItem('tablesData');
+    const tablesData = savedData ? JSON.parse(savedData) : {};
+    const tablesContainer = document.getElementById('tables-container');
+    
+    let tableNumber = 1;
+
+    for (let row = 1; row <= 8; row++) { // zmieniamy ilość rzędów na 8
+        const start = (row % 2 === 0) ? ((row - 1) * 9 + 9) : ((row - 1) * 9 + 1); // początkowy numer stołu w rzędzie
+        const end = (row % 2 === 0) ? (start - 8) : (start + 8); // końcowy numer stołu w rzędzie
+
+        for (let col = start; (row % 2 === 0) ? col >= end : col <= end; (row % 2 === 0) ? col-- : col++) { // iterujemy od startu do końca w zależności od rzędu
+            const tableDiv = document.createElement('div');
+            tableDiv.className = 'table';
+            tableDiv.id = 'table' + tableNumber;
+
+            const tableTitle = document.createElement('h2');
+            tableTitle.innerText = 'Stolik ' + col;
+
+            const personsList = document.createElement('ul');
+            const tableData = tablesData['table' + tableNumber] || [];
+
+            for (let j = 1; j <= 12; j++) {
+                const personItem = document.createElement('li');
+                personItem.className = 'person';
+                personItem.innerHTML = (tableData[j - 1] || 'Osoba ' + j) + '<span class="edit-button" onclick="editPersonName(this.parentElement)">✎</span>';
+                const editInput = document.createElement('input');
+                editInput.className = 'edit-input';
+                personItem.appendChild(editInput);
+                personsList.appendChild(personItem);
+            }
+
+            tableDiv.appendChild(tableTitle);
+            tableDiv.appendChild(personsList);
+            tablesContainer.appendChild(tableDiv);
+
+            tableNumber++;
+        }
+    }
+}
+    function editPersonName(personElement) {
+        const editInput = personElement.querySelector('.edit-input');
+        const currentName = personElement.firstChild.nodeValue.trim();
+
+        editInput.style.display = 'block';
+        editInput.value = currentName;
+
+        editInput.addEventListener('keyup', function(event) {
+            if (event.key === 'Enter') {
+                const newName = editInput.value;
+                personElement.firstChild.nodeValue = newName + ' ';
+                saveDataToLocalStorage(); // Zapisz zmienione dane do localStorage
+                editInput.style.display = 'none';
+                searchTable();
+            }
+        });
+
+        editInput.focus();
+    }
+
+    function saveDataToLocalStorage() {
+        const tablesContainer = document.getElementById('tables-container');
+        const tables = tablesContainer.querySelectorAll('.table');
+        const tablesData = {};
+
+        tables.forEach(table => {
+            const tableId = table.id;
+            const persons = table.querySelectorAll('.person');
+            const tableData = [];
+
+            persons.forEach(person => {
+                tableData.push(person.firstChild.nodeValue.trim());
+            });
+
+            tablesData[tableId] = tableData;
+        });
+
+        localStorage.setItem('tablesData', JSON.stringify(tablesData));
+    }
+
+    function importDataFromJSON(event) {
+        const file = event.target.files[0];
+        const reader = new FileReader();
+
+        reader.onload = function(e) {
+            const data = JSON.parse(e.target.result);
+
+            const tablesContainer = document.getElementById('tables-container');
+            const tables = tablesContainer.querySelectorAll('.table');
+
+            Object.keys(data).forEach(tableId => {
+                const tableData = data[tableId];
+                const table = tablesContainer.querySelector('#' + tableId + ' ul');
+
+                tableData.forEach((personName, index) => {
+                    const personItem = table.children[index];
+                    if (personItem) {
+                        personItem.firstChild.nodeValue = personName + ' ';
+                    }
+                });
+            });
+        };
+
+        reader.readAsText(file);
+    }
+
+    function exportDataToJSON() {
+        const tablesContainer = document.getElementById('tables-container');
+        const tables = tablesContainer.querySelectorAll('.table');
+        const tablesData = {};
+
+        tables.forEach(table => {
+            const tableId = table.id;
+            const persons = table.querySelectorAll('.person');
+            const tableData = [];
+
+            persons.forEach(person => {
+                tableData.push(person.firstChild.nodeValue.trim());
+            });
+
+            tablesData[tableId] = tableData;
+        });
+
+        const dataBlob = new Blob([JSON.stringify(tablesData, null, 2)], { type: 'application/json' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(dataBlob);
+        link.download = 'tables_data.json';
+        link.click();
+    }
+
+    function searchTable() {
+        const searchText = document.getElementById('search').value.toLowerCase();
+        const tables = document.querySelectorAll('.table');
+
+        tables.forEach(table => {
+            const persons = table.querySelectorAll('.person');
+            let tableVisible = false; // Flaga wskazująca, czy stolik zawiera pasującą osobę
+
+            persons.forEach(person => {
+                const name = person.firstChild.nodeValue.toLowerCase();
+                if (name.includes(searchText)) {
+                    person.style.display = 'block';
+                    tableVisible = true; // Ustaw flagę na true, jeśli osobę znaleziono na stoliku
+                } else {
+                    person.style.display = 'none';
+                }
+            });
+
+            // Pokaż lub ukryj stolik w zależności od flagi
+            if (tableVisible) {
+                table.style.display = 'block';
+            } else {
+                table.style.display = 'none';
+            }
+        });
+    }
+
+    window.onload = function () {
+        generateTables();
+    };
+
+    document.getElementById('importButton').addEventListener('change', importDataFromJSON);
+    document.getElementById('exportButton').addEventListener('click', exportDataToJSON);
+</script>
+
+</body>
+</html>
