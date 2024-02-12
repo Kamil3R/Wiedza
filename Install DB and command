@@ -17,3 +17,6 @@ create user 'user'@'%' identified by 'Password1';
 grant all privileges on *.* to 'user'@'%' with grant option;
 flush privileges;
 exit
+
+
+SET GLOBAL validate_password.policy=LOW;
