@@ -1,0 +1,25 @@
+==========================Changde DNS=================================
+sudo apt install resolvconf
+sudo nano /etc/resolvconf/resolv.conf.d/head 
+    nameserver IPv4
+    nameserver 8.8.8.8
+
+sudo resolvconf --enable-updates
+sudo resolvconf -u
+
+======================Add Active Directory============================
+
+sudo apt -y install realmd libnss-sss libpam-sss sssd sssd-tools adcli samba-common-bin oddjob oddjob-mkhomedir packagekit
+
+sudo realm discover DOMAIN.NAME
+sudo realm join -U USER.NAME DOMAIN.NAME
+realm list
+sudo pam-auth-update
+    Check All
+
+/etc/init.d/sssd status
+
+realm permit -g GROUP.NAME
+
+visudo /etc/sudoers
+    %GROUP.NAME@DOMAIN.NAME    ALL=(ALL) ALL
