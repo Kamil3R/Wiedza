@@ -107,3 +107,4 @@ mysql> \q
 
 sudo apt-get install php7.4-ldap
  Install PHP LDAP version 7.4 for LDAP Connection owncloud
+ Edit php.ini end delete ; before ;extension=ldap
