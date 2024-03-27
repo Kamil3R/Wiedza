@@ -1,0 +1,109 @@
+=================================How to install on Debian 12================================
+
+====================================================================================================
+    Install Apache
+
+# apt install apache2
+  On Debian machines, Apache will start automatically after installation. To confirm this, you can execute the following command.
+
+# systemctl status apache2
+  You will see the status displayed, indicating that Apache is operational.
+
+  Owncloud requires mod_rewrite, and the rewrite module is not enabled by default. Let’s enable it and the other two modules now.
+
+# a2enmod rewrite headers unique_id
+  After enabling the modules, we need to restart apache to apply the new configuration.
+
+# systemctl restart apache2
+  Now, let’s create two directories for our Owncloud installation.
+
+# mkdir -p /var/www/html/yourdomain.com/
+  Then, let’s assign the appropriate permissions to these directories.
+
+# chown -R www-data: /var/www/html/yourdomain.com/
+  The next step is to create an apache virtual host.
+
+# nano /etc/apache2/sites-available/yourdomain.com.conf
+  Then add the following lines to the file. Make sure to replace yourdomain.com with your actual domain or subdomain name.
+
+<VirtualHost *:80>
+
+ServerAdmin admin@yourdomain.com
+ServerName yourdomain.com
+ServerAlias www.yourdomain.com
+DocumentRoot /var/www/html/yourdomain.com
+
+ErrorLog ${APACHE_LOG_DIR}/yourdomain.com_error.log
+CustomLog ${APACHE_LOG_DIR}/yourdomain.com_access.log combined
+
+<Directory /var/www/html/yourdomain.com/>
+  Options +FollowSymlinks
+  AllowOverride All
+</Directory>
+ <IfModule mod_dav.c>
+  Dav off
+ </IfModule>
+
+</VirtualHost>
+  Save the file, then exit. It is time to enable the virtual host.
+
+# a2ensite yourdomain.com
+  Reload apache to apply the changes.
+
+# systemctl reload apache2
+  By default, on Debian 12, Apache is using MPM Event. We need to switch to MPM PREFORK so we can enable mod_php. We will enable mod_php in the next step after installing PHP.
+
+# a2dismod mpm_event
+# a2enmod mpm_prefork
+
+====================================================================================================
+    Install PHP
+
+apt install -y apt-transport-https lsb-release ca-certificates wget
+wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
+echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/php.list
+  Now, let’s refresh the package index files on the system
+
+# apt update
+  Since you have set up the necessary PPA on your system and the package index is updated, let’s proceed with installing the required PHP version.
+
+# apt install php7.4-{xml,intl,common,json,curl,mbstring,mysql,gd,imagick,zip,opcache} libapache2-mod-php7.4
+  PHP and its required extensions have been installed. Let’s enable MOD PHP for Apache.
+
+# a2enmod php7.4
+  To apply the changes, let’s restart Apache.
+
+# systemctl restart apache
+
+    Install Maria DB
+
+apt install mariadb-server
+
+====================================================================================================
+    Create a Database
+
+# mysql
+  Once logged in to MySQL shell, we can run the following commands.
+
+mysql> CREATE DATABASE owncloud;
+mysql> GRANT ALL on owncloud.* to owncloud@localhost identified by 'm0d1fyth15';
+mysql> FLUSH PRIVILEGES;
+mysql> \q
+  Remember to replace m0d1fyth15 with a stronger password.
+
+====================================================================================================
+  Download OwnCloud
+
+# cd /var/www/html/yourdomain.com
+# wget https://download.owncloud.com/server/stable/owncloud-latest.tar.bz2
+# tar -xf owncloud-latest.tar.bz2 --strip-components 1
+
+  The commands above will download and then extract the compressed file into the directory /var/www/html/yourdomain.com. Now, let’s give the correct permissions.
+
+# chown -R www-data: /var/www/html/yourdomain.com/
+
+====================================================================================================
+  Install PHP LDAP
+
+sudo apt-get install php7.4-ldap
+ Install PHP LDAP version 7.4 for LDAP Connection owncloud
